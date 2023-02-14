@@ -1,19 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
     <link href="./styles.css" rel="stylesheet">
-    <title>Hello World!</title>
+    <title>Timetracking</title>
+    <script src="timeTracking.js" defer></script>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
-
-    <!-- You can also require other files to run in this process -->
+    <h1>Timetracking</h1>
+    <div id="newTimeTrackingEntry">
+      <input id="newTimeTrackingEntryDescription" type="text" placeholder="Enter description"/>
+      <input id="newTimeTrackingEntryStart" type="datetime-local"/>
+      <input id="newTimeTrackingEntryEnd" type="datetime-local"/>
+      <input id="newTimeTrackingEntryTag" type="text" placeholder="Enter tag" list="newTimeTrackingEntryTagList"/>
+      <datalist id="newTimeTrackingEntryTagList"></datalist>
+      <button type="button" id="newTimeTrackingEntryButton">Enter</button>
+    </div>
+    <div id="timeTrackingList">
+      <div id="timeTrackingListHead" class="timeTrackingListElement">
+        <div class="timeTrackingListElementColumn flexGrow3">Description</div>
+        <div class="timeTrackingListElementColumn flexGrow2">Start</div>
+        <div class="timeTrackingListElementColumn flexGrow2">End</div>
+        <div class="timeTrackingListElementColumn flexGrow1">Tag</div>
+      </div>
+      <div id="timeTrackingListContent"></div>
+    </div>
     <script src="./renderer.js"></script>
   </body>
 </html>
