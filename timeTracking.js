@@ -3,13 +3,13 @@
 let tags = ['School', 'Private'];
 let entries = [
     {
-        description: 'Balalalala',
+        description: 'WEBT macht mich fertig',
         start: new Date("2021-01-01T12:00:00Z"),
         end: new Date("2021-01-01T13:00:00Z"),
         tagId: 0,
     },
     {
-        description: 'Balalalalalalalalalal',
+        description: 'Gatze streicheln',
         start: new Date("2021-01-01T14:00:00Z"),
         end: new Date("2021-01-01T15:00:00Z"),
         tagId: 1,
@@ -55,6 +55,7 @@ function renderList() {
 
 function updateTagSuggestions() {
     let suggestionDataList = document.getElementById('newTimeTrackingEntryTagList');
+    suggestionDataList.innerHTML = '';
     for (let [index, tag] of tags.entries()) {
         let tagSuggestion = document.createElement('option');
         tagSuggestion.setAttribute('id', index + 'newTimeTrackingEntryTagSuggestion');
@@ -68,10 +69,19 @@ function addListEntry() {
     let start = document.getElementById('newTimeTrackingEntryStart').value;
     let end = document.getElementById('newTimeTrackingEntryEnd').value;
     let tag = document.getElementById('newTimeTrackingEntryTag').value;
-    console.log(description);
-    console.log(start);
-    console.log(end);
-    console.log(tag);
-    // CONTINUE HERE
-    // UPDATE TAGS IF NEW TAG IS ENTERED
+    if (description === '' || start === '' || end === '' || tag === '') {
+        alert('No empty fields allowed!')
+    } else {
+        if (!tags.includes(tag)) {
+            tags.push(tag);
+            updateTagSuggestions();
+        }
+        entries.push({
+            description: description,
+            start: new Date(start + ":00Z"),
+            end: new Date(end + ":00Z"),
+            tagId: tags.indexOf(tag),
+        });
+        renderList();
+    }
 }
