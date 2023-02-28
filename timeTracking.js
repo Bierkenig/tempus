@@ -42,6 +42,7 @@ let listHeadColumns = {
     tag: document.getElementById('timeTrackingListHeadTag'),
 }
 let tagFilterSelect = document.getElementById('tagFilterSelect');
+let dateFilterInput = document.getElementById('dateFilterInput');
 
 setup();
 
@@ -55,52 +56,56 @@ function setup() {
     listHeadColumns.end.addEventListener('click', sortByEndDate);
     listHeadColumns.tag.addEventListener('click', sortByTag);
     tagFilterSelect.addEventListener('change', renderList);
+    dateFilterInput.addEventListener('change', renderList);
     document.getElementById('resetFilter').addEventListener('click', resetFilters);
 }
 
+// CONTINUE HERE (CHECK DATE FILTER)
 function renderList() {
     let list = document.getElementById('timeTrackingListContent');
     list.innerHTML = '';
     for (let [index, entry] of entries.entries()) {
         if (tagFilterSelect.value === 'placeholder' || tagFilterSelect.value === tags[entry.tagId]) {
-            let listElement = document.createElement('div');
-            listElement.setAttribute('id', index + 'timeTrackingListElement');
-            listElement.setAttribute('class', 'timeTrackingListElement');
+            if (dateFilterInput.value === '' /* OR startdate = datefilter OR end = datefilter (only day, not time) */) {
+                let listElement = document.createElement('div');
+                listElement.setAttribute('id', index + 'timeTrackingListElement');
+                listElement.setAttribute('class', 'timeTrackingListElement');
 
-            let description = document.createElement('div');
-            description.setAttribute('class', 'timeTrackingListElementColumn flexGrow3');
-            description.textContent = entry.description;
+                let description = document.createElement('div');
+                description.setAttribute('class', 'timeTrackingListElementColumn flexGrow3');
+                description.textContent = entry.description;
 
-            let start = document.createElement('div');
-            start.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
-            start.textContent = entry.start.toLocaleString('de-DE');
+                let start = document.createElement('div');
+                start.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
+                start.textContent = entry.start.toLocaleString('de-DE');
 
-            let end = document.createElement('div');
-            end.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
-            end.textContent = entry.end.toLocaleString('de-DE');
+                let end = document.createElement('div');
+                end.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
+                end.textContent = entry.end.toLocaleString('de-DE');
 
-            let tag = document.createElement('div');
-            tag.setAttribute('class', 'timeTrackingListElementColumn flexGrow1');
-            tag.textContent = tags[entry.tagId];
+                let tag = document.createElement('div');
+                tag.setAttribute('class', 'timeTrackingListElementColumn flexGrow1');
+                tag.textContent = tags[entry.tagId];
 
-            let deleteButton = document.createElement('button');
-            deleteButton.setAttribute('type', 'button');
-            deleteButton.addEventListener('click', function() {
-                deleteListEntry(entry)
-            });
-            deleteButton.textContent = 'Delete';
+                let deleteButton = document.createElement('button');
+                deleteButton.setAttribute('type', 'button');
+                deleteButton.addEventListener('click', function () {
+                    deleteListEntry(entry)
+                });
+                deleteButton.textContent = 'Delete';
 
-            let deleteButtonContainer = document.createElement('div');
-            deleteButtonContainer.setAttribute('class', 'timeTrackingListElementColumn flexGrow1');
-            deleteButtonContainer.appendChild(deleteButton)
+                let deleteButtonContainer = document.createElement('div');
+                deleteButtonContainer.setAttribute('class', 'timeTrackingListElementColumn flexGrow1');
+                deleteButtonContainer.appendChild(deleteButton)
 
-            listElement.appendChild(description);
-            listElement.appendChild(start);
-            listElement.appendChild(end);
-            listElement.appendChild(tag);
-            listElement.appendChild(deleteButtonContainer);
+                listElement.appendChild(description);
+                listElement.appendChild(start);
+                listElement.appendChild(end);
+                listElement.appendChild(tag);
+                listElement.appendChild(deleteButtonContainer);
 
-            list.appendChild(listElement);
+                list.appendChild(listElement);
+            }
         }
     }
 }
@@ -115,7 +120,7 @@ function updateTagSuggestions() {
     tagFilterPlaceholder.setAttribute('value', 'placeholder');
     tagFilterPlaceholder.setAttribute('selected', 'true');
     tagFilterPlaceholder.setAttribute('disabled', 'true');
-    tagFilterPlaceholder.textContent = 'Filter by Tag';
+    tagFilterPlaceholder.textContent = 'Select Tag';
     tagFilterSelect.appendChild(tagFilterPlaceholder);
 
     for (let [index, tag] of tags.entries()) {
@@ -174,6 +179,7 @@ function clearEntryInputs() {
 
 function resetFilters() {
     updateTagSuggestions();
+    dateFilterInput.value = '';
     renderList();
     setSortIcons(null)
 }
