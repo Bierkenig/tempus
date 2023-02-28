@@ -28,7 +28,13 @@ let entries = [
     },
 ];
 let lastSort;
-let doubleLastSort = false
+let doubleLastSort = false;
+let listHeadColumns = {
+    description: document.getElementById('timeTrackingListHeadDescription'),
+    start: document.getElementById('timeTrackingListHeadStart'),
+    end: document.getElementById('timeTrackingListHeadEnd'),
+    tag: document.getElementById('timeTrackingListHeadTag'),
+}
 
 setup();
 
@@ -36,10 +42,10 @@ function setup() {
     renderList();
     updateTagSuggestions();
     document.getElementById('newTimeTrackingEntryButton').addEventListener('click', addListEntry);
-    document.getElementById('timeTrackingListHeadDescription').addEventListener('click', sortByDescription);
-    document.getElementById('timeTrackingListHeadStart').addEventListener('click', sortByStartDate);
-    document.getElementById('timeTrackingListHeadEnd').addEventListener('click', sortByEndDate);
-    document.getElementById('timeTrackingListHeadTag').addEventListener('click', sortByTag);
+    listHeadColumns.description.addEventListener('click', sortByDescription);
+    listHeadColumns.start.addEventListener('click', sortByStartDate);
+    listHeadColumns.end.addEventListener('click', sortByEndDate);
+    listHeadColumns.tag.addEventListener('click', sortByTag);
 }
 
 function renderList() {
@@ -125,6 +131,7 @@ function sortByTag() {
 }
 
 function sortEntries(property) {
+    let listHeadColumn = listHeadColumns[property];
     switch (property) {
         case 'description':
             entries.sort(compareDescription);
@@ -149,43 +156,60 @@ function sortEntries(property) {
     }
     lastSort = property;
     renderList();
+    setSortIcons(property);
 }
 
-function compareDescription( a, b ) {
-    if ( a.description < b.description ){
+function setSortIcons(property) {
+    for (let [key, listHeadColumn] of Object.entries(listHeadColumns)) {
+        let newListHeadColumn = listHeadColumn.textContent.split('');
+        if (listHeadColumn.textContent.toLowerCase().includes(property)) {
+            if (doubleLastSort) {
+                newListHeadColumn[0] = '▲';
+            } else {
+                newListHeadColumn[0] = '▼';
+            }
+        } else {
+            newListHeadColumn[0] = '•';
+        }
+        listHeadColumn.textContent = newListHeadColumn.join('');
+    }
+}
+
+function compareDescription(a, b) {
+    if (a.description < b.description) {
         return -1;
     }
-    if ( a.description > b.description ){
+    if (a.description > b.description) {
         return 1;
     }
     return 0;
 }
 
-function compareStartDate( a, b ) {
-    if ( a.start < b.start ){
+function compareStartDate(a, b) {
+    if (a.start < b.start) {
         return -1;
     }
-    if ( a.start > b.start ){
+    if (a.start > b.start) {
         return 1;
     }
     return 0;
 }
 
-function compareEndDate( a, b ) {
-    if ( a.end < b.end ){
+function compareEndDate(a, b) {
+    if (a.end < b.end) {
         return -1;
     }
-    if ( a.end > b.end ){
+    if (a.end > b.end) {
         return 1;
     }
     return 0;
 }
 
-function compareTag( a, b ) {
-    if ( tags[a.tagId] < tags[b.tagId] ){
+function compareTag(a, b) {
+    if (tags[a.tagId] < tags[b.tagId]) {
         return -1;
     }
-    if ( tags[a.tagId] > tags[b.tagId] ){
+    if (tags[a.tagId] > tags[b.tagId]) {
         return 1;
     }
     return 0;
