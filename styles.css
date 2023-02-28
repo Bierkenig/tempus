@@ -2,6 +2,26 @@
     font-family: Calibri, sans-serif;
 }
 
+#functionBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#newTimeTrackingEntry {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
+
+.deleteEntryButton {
+    width: fit-content;
+}
+
 .timeTrackingList {
     display: flex;
     flex-direction: column;

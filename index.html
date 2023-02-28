@@ -1,32 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
     <link href="./styles.css" rel="stylesheet">
     <title>Tempus</title>
     <script src="timeTracking.js" defer></script>
-  </head>
-  <body>
-    <h1 id="pageHeading" class="noUserSelect">Timetracking</h1>
+</head>
+<body>
+<h1 id="pageHeading" class="noUserSelect">Timetracking</h1>
+<div id="functionBar">
     <div id="newTimeTrackingEntry">
-      <input id="newTimeTrackingEntryDescription" type="text" placeholder="Enter description"/>
-      <input id="newTimeTrackingEntryStart" type="datetime-local"/>
-      <input id="newTimeTrackingEntryEnd" type="datetime-local"/>
-      <input id="newTimeTrackingEntryTag" type="text" placeholder="Enter tag" list="newTimeTrackingEntryTagList"/>
-      <datalist id="newTimeTrackingEntryTagList"></datalist>
-      <button type="button" id="newTimeTrackingEntryButton">Enter</button>
+        <input id="newTimeTrackingEntryDescription" type="text" placeholder="Enter description"/>
+        <input id="newTimeTrackingEntryStart" type="datetime-local"/>
+        <input id="newTimeTrackingEntryEnd" type="datetime-local"/>
+        <input id="newTimeTrackingEntryTag" type="text" placeholder="Enter tag" list="newTimeTrackingEntryTagList"/>
+        <datalist id="newTimeTrackingEntryTagList"></datalist>
+        <button type="button" id="newTimeTrackingEntryButton">Enter</button>
+        <button type="button" id="clearTimeTrackingEntryButton">Clear</button>
     </div>
-    <div id="timeTrackingList">
-      <div id="timeTrackingListHead" class="timeTrackingListElement">
-        <div id="timeTrackingListHeadDescription" class="timeTrackingListElementColumn flexGrow3 noUserSelect">• Description</div>
-        <div id="timeTrackingListHeadStart" class="timeTrackingListElementColumn flexGrow2 noUserSelect">• Start</div>
-        <div id="timeTrackingListHeadEnd" class="timeTrackingListElementColumn flexGrow2 noUserSelect">• End</div>
-        <div id="timeTrackingListHeadTag" class="timeTrackingListElementColumn flexGrow1 noUserSelect">• Tag</div>
-      </div>
-      <div id="timeTrackingListContent"></div>
+    <div id="filters">
+        <select id="tagFilterSelect"></select>
+        <button type="button" id="resetFilter">Reset</button>
     </div>
-    <script src="./renderer.js"></script>
-  </body>
+</div>
+<div id="timeTrackingList">
+    <div id="timeTrackingListHead" class="timeTrackingListElement">
+        <div id="timeTrackingListHeadDescription" class="timeTrackingListElementColumn flexGrow3 noUserSelect">►
+            Description
+        </div>
+        <div id="timeTrackingListHeadStart" class="timeTrackingListElementColumn flexGrow2 noUserSelect">► Start</div>
+        <div id="timeTrackingListHeadEnd" class="timeTrackingListElementColumn flexGrow2 noUserSelect">► End</div>
+        <div id="timeTrackingListHeadTag" class="timeTrackingListElementColumn flexGrow1 noUserSelect">► Tag</div>
+        <div id="timeTrackingListHeadAction" class="timeTrackingListElementColumn flexGrow1 noUserSelect">Action</div>
+    </div>
+    <div id="timeTrackingListContent"></div>
+</div>
+<script src="./renderer.js"></script>
+</body>
 </html>

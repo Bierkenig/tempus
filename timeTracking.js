@@ -15,7 +15,7 @@ let entries = [
         tagId: 1,
     },
     {
-        description: 'Aplha',
+        description: 'Alpha',
         start: new Date("2020-01-01T14:00:00Z"),
         end: new Date("2020-01-01T15:00:00Z"),
         tagId: 1,
@@ -29,74 +29,114 @@ let entries = [
 ];
 let lastSort;
 let doubleLastSort = false;
+let entryInputs = {
+    description: document.getElementById('newTimeTrackingEntryDescription'),
+    start: document.getElementById('newTimeTrackingEntryStart'),
+    end: document.getElementById('newTimeTrackingEntryEnd'),
+    tag: document.getElementById('newTimeTrackingEntryTag'),
+}
 let listHeadColumns = {
     description: document.getElementById('timeTrackingListHeadDescription'),
     start: document.getElementById('timeTrackingListHeadStart'),
     end: document.getElementById('timeTrackingListHeadEnd'),
     tag: document.getElementById('timeTrackingListHeadTag'),
 }
+let tagFilterSelect = document.getElementById('tagFilterSelect');
 
 setup();
 
 function setup() {
-    renderList();
     updateTagSuggestions();
+    renderList();
     document.getElementById('newTimeTrackingEntryButton').addEventListener('click', addListEntry);
+    document.getElementById('clearTimeTrackingEntryButton').addEventListener('click', clearEntryInputs);
     listHeadColumns.description.addEventListener('click', sortByDescription);
     listHeadColumns.start.addEventListener('click', sortByStartDate);
     listHeadColumns.end.addEventListener('click', sortByEndDate);
     listHeadColumns.tag.addEventListener('click', sortByTag);
+    tagFilterSelect.addEventListener('change', renderList);
+    document.getElementById('resetFilter').addEventListener('click', resetFilters);
 }
 
 function renderList() {
     let list = document.getElementById('timeTrackingListContent');
     list.innerHTML = '';
     for (let [index, entry] of entries.entries()) {
-        let listElement = document.createElement('div');
-        listElement.setAttribute('id', index + 'timeTrackingListElement');
-        listElement.setAttribute('class', 'timeTrackingListElement');
+        if (tagFilterSelect.value === 'placeholder' || tagFilterSelect.value === tags[entry.tagId]) {
+            let listElement = document.createElement('div');
+            listElement.setAttribute('id', index + 'timeTrackingListElement');
+            listElement.setAttribute('class', 'timeTrackingListElement');
 
-        let description = document.createElement('div');
-        description.setAttribute('class', 'timeTrackingListElementColumn flexGrow3');
-        description.textContent = entry.description;
+            let description = document.createElement('div');
+            description.setAttribute('class', 'timeTrackingListElementColumn flexGrow3');
+            description.textContent = entry.description;
 
-        let start = document.createElement('div');
-        start.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
-        start.textContent = entry.start.toLocaleString('de-DE');
+            let start = document.createElement('div');
+            start.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
+            start.textContent = entry.start.toLocaleString('de-DE');
 
-        let end = document.createElement('div');
-        end.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
-        end.textContent = entry.end.toLocaleString('de-DE');
+            let end = document.createElement('div');
+            end.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
+            end.textContent = entry.end.toLocaleString('de-DE');
 
-        let tag = document.createElement('div');
-        tag.setAttribute('class', 'timeTrackingListElementColumn flexGrow1');
-        tag.textContent = tags[entry.tagId];
+            let tag = document.createElement('div');
+            tag.setAttribute('class', 'timeTrackingListElementColumn flexGrow1');
+            tag.textContent = tags[entry.tagId];
 
-        listElement.appendChild(description);
-        listElement.appendChild(start);
-        listElement.appendChild(end);
-        listElement.appendChild(tag);
+            let deleteButton = document.createElement('button');
+            deleteButton.setAttribute('type', 'button');
+            deleteButton.addEventListener('click', function() {
+                deleteListEntry(entry)
+            });
+            deleteButton.textContent = 'Delete';
 
-        list.appendChild(listElement);
+            let deleteButtonContainer = document.createElement('div');
+            deleteButtonContainer.setAttribute('class', 'timeTrackingListElementColumn flexGrow1');
+            deleteButtonContainer.appendChild(deleteButton)
+
+            listElement.appendChild(description);
+            listElement.appendChild(start);
+            listElement.appendChild(end);
+            listElement.appendChild(tag);
+            listElement.appendChild(deleteButtonContainer);
+
+            list.appendChild(listElement);
+        }
     }
 }
 
 function updateTagSuggestions() {
     let suggestionDataList = document.getElementById('newTimeTrackingEntryTagList');
     suggestionDataList.innerHTML = '';
+    tagFilterSelect.innerHTML = '';
+
+    let tagFilterPlaceholder = document.createElement('option');
+    tagFilterPlaceholder.setAttribute('id', 'tagFilterPlaceholder');
+    tagFilterPlaceholder.setAttribute('value', 'placeholder');
+    tagFilterPlaceholder.setAttribute('selected', 'true');
+    tagFilterPlaceholder.setAttribute('disabled', 'true');
+    tagFilterPlaceholder.textContent = 'Filter by Tag';
+    tagFilterSelect.appendChild(tagFilterPlaceholder);
+
     for (let [index, tag] of tags.entries()) {
         let tagSuggestion = document.createElement('option');
         tagSuggestion.setAttribute('id', index + 'newTimeTrackingEntryTagSuggestion');
         tagSuggestion.setAttribute('value', tag);
         suggestionDataList.appendChild(tagSuggestion);
+
+        let tagFilter = document.createElement('option');
+        tagFilter.setAttribute('id', index + 'tagFilter');
+        tagFilter.setAttribute('value', tag);
+        tagFilter.textContent = tag;
+        tagFilterSelect.appendChild(tagFilter);
     }
 }
 
 function addListEntry() {
-    let description = document.getElementById('newTimeTrackingEntryDescription').value;
-    let start = document.getElementById('newTimeTrackingEntryStart').value;
-    let end = document.getElementById('newTimeTrackingEntryEnd').value;
-    let tag = document.getElementById('newTimeTrackingEntryTag').value;
+    let description = entryInputs.description.value;
+    let start = entryInputs.start.value;
+    let end = entryInputs.end.value;
+    let tag = entryInputs.tag.value;
     if (description === '' || start === '' || end === '' || tag === '') {
         alert('No empty fields allowed!')
     } else {
@@ -111,7 +151,31 @@ function addListEntry() {
             tagId: tags.indexOf(tag),
         });
         renderList();
+        clearEntryInputs();
     }
+}
+
+function deleteListEntry(entry) {
+    for (let [index, checkEntry] of entries.entries()) {
+        if (checkEntry === entry && confirm('Delete "' + entry.description + '"?')) {
+            entries.splice(index, 1);
+            break
+        }
+    }
+    renderList();
+}
+
+function clearEntryInputs() {
+    for (let [key, entryInput] of Object.entries(entryInputs)) {
+        entryInput.value = '';
+    }
+    setSortIcons(null)
+}
+
+function resetFilters() {
+    updateTagSuggestions();
+    renderList();
+    setSortIcons(null)
 }
 
 function sortByDescription() {
@@ -169,7 +233,7 @@ function setSortIcons(property) {
                 newListHeadColumn[0] = '▼';
             }
         } else {
-            newListHeadColumn[0] = '•';
+            newListHeadColumn[0] = '►';
         }
         listHeadColumn.textContent = newListHeadColumn.join('');
     }
