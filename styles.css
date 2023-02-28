@@ -35,3 +35,7 @@
 .flexGrow3 {
     flex-grow: 3;
 }
+
+.noUserSelect {
+    user-select: none;
+}

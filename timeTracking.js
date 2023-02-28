@@ -14,11 +14,33 @@ let entries = [
         end: new Date("2021-01-01T15:00:00Z"),
         tagId: 1,
     },
+    {
+        description: 'Aplha',
+        start: new Date("2020-01-01T14:00:00Z"),
+        end: new Date("2020-01-01T15:00:00Z"),
+        tagId: 1,
+    },
+    {
+        description: 'Beta',
+        start: new Date("2024-01-01T14:00:00Z"),
+        end: new Date("2024-01-01T15:00:00Z"),
+        tagId: 1,
+    },
 ];
+let lastSort;
+let doubleLastSort = false
 
-renderList();
-updateTagSuggestions();
-document.getElementById('newTimeTrackingEntryButton').addEventListener('click', addListEntry);
+setup();
+
+function setup() {
+    renderList();
+    updateTagSuggestions();
+    document.getElementById('newTimeTrackingEntryButton').addEventListener('click', addListEntry);
+    document.getElementById('timeTrackingListHeadDescription').addEventListener('click', sortByDescription);
+    document.getElementById('timeTrackingListHeadStart').addEventListener('click', sortByStartDate);
+    document.getElementById('timeTrackingListHeadEnd').addEventListener('click', sortByEndDate);
+    document.getElementById('timeTrackingListHeadTag').addEventListener('click', sortByTag);
+}
 
 function renderList() {
     let list = document.getElementById('timeTrackingListContent');
@@ -84,4 +106,87 @@ function addListEntry() {
         });
         renderList();
     }
+}
+
+function sortByDescription() {
+    sortEntries('description');
+}
+
+function sortByStartDate() {
+    sortEntries('start');
+}
+
+function sortByEndDate() {
+    sortEntries('end');
+}
+
+function sortByTag() {
+    sortEntries('tag');
+}
+
+function sortEntries(property) {
+    switch (property) {
+        case 'description':
+            entries.sort(compareDescription);
+            break;
+        case 'start':
+            entries.sort(compareStartDate);
+            break;
+        case 'end':
+            entries.sort(compareEndDate);
+            break;
+        case 'tag':
+            entries.sort(compareTag);
+            break;
+        default:
+            break;
+    }
+    if (lastSort === property && !doubleLastSort) {
+        entries.reverse();
+        doubleLastSort = true;
+    } else {
+        doubleLastSort = false;
+    }
+    lastSort = property;
+    renderList();
+}
+
+function compareDescription( a, b ) {
+    if ( a.description < b.description ){
+        return -1;
+    }
+    if ( a.description > b.description ){
+        return 1;
+    }
+    return 0;
+}
+
+function compareStartDate( a, b ) {
+    if ( a.start < b.start ){
+        return -1;
+    }
+    if ( a.start > b.start ){
+        return 1;
+    }
+    return 0;
+}
+
+function compareEndDate( a, b ) {
+    if ( a.end < b.end ){
+        return -1;
+    }
+    if ( a.end > b.end ){
+        return 1;
+    }
+    return 0;
+}
+
+function compareTag( a, b ) {
+    if ( tags[a.tagId] < tags[b.tagId] ){
+        return -1;
+    }
+    if ( tags[a.tagId] > tags[b.tagId] ){
+        return 1;
+    }
+    return 0;
 }

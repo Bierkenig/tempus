@@ -9,7 +9,7 @@
     <script src="timeTracking.js" defer></script>
   </head>
   <body>
-    <h1>Timetracking</h1>
+    <h1 id="pageHeading" class="noUserSelect">Timetracking</h1>
     <div id="newTimeTrackingEntry">
       <input id="newTimeTrackingEntryDescription" type="text" placeholder="Enter description"/>
       <input id="newTimeTrackingEntryStart" type="datetime-local"/>
@@ -20,10 +20,10 @@
     </div>
     <div id="timeTrackingList">
       <div id="timeTrackingListHead" class="timeTrackingListElement">
-        <div class="timeTrackingListElementColumn flexGrow3">Description</div>
-        <div class="timeTrackingListElementColumn flexGrow2">Start</div>
-        <div class="timeTrackingListElementColumn flexGrow2">End</div>
-        <div class="timeTrackingListElementColumn flexGrow1">Tag</div>
+        <div id="timeTrackingListHeadDescription" class="timeTrackingListElementColumn flexGrow3 noUserSelect">Description</div>
+        <div id="timeTrackingListHeadStart" class="timeTrackingListElementColumn flexGrow2 noUserSelect">Start</div>
+        <div id="timeTrackingListHeadEnd" class="timeTrackingListElementColumn flexGrow2 noUserSelect">End</div>
+        <div id="timeTrackingListHeadTag" class="timeTrackingListElementColumn flexGrow1 noUserSelect">Tag</div>
       </div>
       <div id="timeTrackingListContent"></div>
     </div>
