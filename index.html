@@ -10,42 +10,57 @@
     <script src="timeTracking.js" defer></script>
 </head>
 <body>
-<h1 id="pageHeading" class="noUserSelect">Timetracking</h1>
+<div id="pageHeadingContainer" class="darkBackground">
+    <div id="pageHeading" class="noUserSelect">Timetracking</div>
+</div>
 <div id="functionBar">
-    <div id="newTimeTrackingEntry">
-        <input id="newTimeTrackingEntryDescription" type="text" placeholder="Enter description"/>
-        <input id="newTimeTrackingEntryStart" type="datetime-local"/>
-        <input id="newTimeTrackingEntryEnd" type="datetime-local"/>
-        <input id="newTimeTrackingEntryTag" type="text" placeholder="Enter tag" list="newTimeTrackingEntryTagList"/>
-        <datalist id="newTimeTrackingEntryTagList"></datalist>
-        <button type="button" id="newTimeTrackingEntryButton">Enter</button>
-        <button type="button" id="clearTimeTrackingEntryButton">Clear</button>
+    <div id="newTimeTrackingEntryContainer" class="darkBackground">
+        <div id="newTimeTrackingEntryHeading" class="boxHeading">New Entry</div>
+        <div id="newTimeTrackingEntry">
+            <input id="newTimeTrackingEntryDescription" type="text" placeholder="Enter description"/>
+            <input id="newTimeTrackingEntryStart" type="datetime-local"/>
+            <input id="newTimeTrackingEntryEnd" type="datetime-local"/>
+            <input id="newTimeTrackingEntryTag" type="text" placeholder="Enter tag" list="newTimeTrackingEntryTagList"/>
+            <datalist id="newTimeTrackingEntryTagList"></datalist>
+            <button type="button" id="newTimeTrackingEntryButton">Enter</button>
+            <button type="button" id="clearTimeTrackingEntryButton">Clear</button>
+        </div>
     </div>
-    <div id="filters">
-        <div id="tagFilters">
+    <div id="filterContainer" class="darkBackground">
+        <div id="filterHeading" class="boxHeading">Filters</div>
+        <div id="filters">
             <select id="tagFilterSelect"></select>
-        </div>
-        <div id="dateFilters">
             <input id="dateFilterInput" type="date"/>
+            <button type="button" id="resetFilter">Reset</button>
         </div>
-        <button type="button" id="resetFilter">Reset</button>
     </div>
 </div>
-<div id="timeTrackingList">
-    <div id="timeTrackingListHead" class="timeTrackingListElement">
-        <div id="timeTrackingListHeadDescription" class="timeTrackingListElementColumn flexGrow3 noUserSelect">►
-            Description
+<div id="timeTrackingListContainer" class="darkBackground">
+    <div id="timeTrackingListHeading" class="boxHeading">Your Entries</div>
+    <div id="timeTrackingList">
+        <div id="timeTrackingListHead" class="timeTrackingListElement lightBackground">
+            <div id="timeTrackingListHeadDescription" class="timeTrackingListElementColumn flexGrow5 noUserSelect">►
+                Description
+            </div>
+            <div id="timeTrackingListHeadStart" class="timeTrackingListElementColumn flexGrow3 noUserSelect">► Start
+            </div>
+            <div id="timeTrackingListHeadEnd" class="timeTrackingListElementColumn flexGrow3 noUserSelect">► End</div>
+            <div id="timeTrackingListHeadDuration" class="timeTrackingListElementColumn flexGrow2 noUserSelect">►
+                Duration
+            </div>
+            <div id="timeTrackingListHeadTag" class="timeTrackingListElementColumn flexGrow2 noUserSelect">► Tag</div>
+            <div id="timeTrackingListHeadAction" class="timeTrackingListElementColumn flexGrow1 noUserSelect">Action
+            </div>
         </div>
-        <div id="timeTrackingListHeadStart" class="timeTrackingListElementColumn flexGrow2 noUserSelect">► Start</div>
-        <div id="timeTrackingListHeadEnd" class="timeTrackingListElementColumn flexGrow2 noUserSelect">► End</div>
-        <div id="timeTrackingListHeadDuration" class="timeTrackingListElementColumn flexGrow1 noUserSelect">► Duration</div>
-        <div id="timeTrackingListHeadTag" class="timeTrackingListElementColumn flexGrow1 noUserSelect">► Tag</div>
-        <div id="timeTrackingListHeadAction" class="timeTrackingListElementColumn flexGrow1 noUserSelect">Action</div>
-    </div>
-    <div id="timeTrackingListContent"></div>
-    <div id="timeTrackingListFooter">
-        <div id="timeTrackingListFooterCount"></div>
-        <div id="timeTrackingListFooterTotalHours"></div>
+        <div id="timeTrackingListContent"></div>
+        <div id="timeTrackingListFooter" class="lightBackground">
+            <div id="timeTrackingListFooterCount"></div>
+            <div id="filterIndicatorContainer">
+                Filters:
+                <div id="filterIndicator" class="filterIndicatorInactive">Inactive</div>
+            </div>
+            <div id="timeTrackingListFooterTotalHours"></div>
+        </div>
     </div>
 </div>
 <script src="./renderer.js"></script>

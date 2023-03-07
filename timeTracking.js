@@ -63,7 +63,10 @@ function setup() {
     listHeadColumns.tag.addEventListener('click', sortByTag);
     tagFilterSelect.addEventListener('change', renderList);
     dateFilterInput.addEventListener('change', renderList);
+    tagFilterSelect.addEventListener('change', setFilterIndicator);
+    dateFilterInput.addEventListener('change', setFilterIndicator);
     document.getElementById('resetFilter').addEventListener('click', resetFilters);
+    document.getElementById('filterIndicator').addEventListener('click', resetFilters);
 }
 
 function renderList() {
@@ -80,40 +83,41 @@ function renderList() {
             if (dateFilterInput.value === '' || dateFilterString === startDateString || dateFilterString === endDateString) {
                 let listElement = document.createElement('div');
                 listElement.setAttribute('id', index + 'timeTrackingListElement');
-                listElement.setAttribute('class', 'timeTrackingListElement');
+                listElement.setAttribute('class', 'timeTrackingListElement lightBackground');
 
                 let description = document.createElement('div');
-                description.setAttribute('class', 'timeTrackingListElementColumn flexGrow3');
+                description.setAttribute('class', 'timeTrackingListElementColumn flexGrow5');
                 description.textContent = entry.description;
 
                 let start = document.createElement('div');
-                start.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
+                start.setAttribute('class', 'timeTrackingListElementColumn flexGrow3');
                 start.textContent = entry.start.toLocaleString('de-DE');
 
                 let end = document.createElement('div');
-                end.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
+                end.setAttribute('class', 'timeTrackingListElementColumn flexGrow3');
                 end.textContent = entry.end.toLocaleString('de-DE');
 
                 let duration = document.createElement('div');
-                duration.setAttribute('class', 'timeTrackingListElementColumn flexGrow1');
+                duration.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
                 let hours = Math.abs(entry.end - entry.start) / (1000 * 60 * 60);
                 totalHours += hours;
                 duration.textContent = formatDuration(hours);
 
                 let tag = document.createElement('div');
-                tag.setAttribute('class', 'timeTrackingListElementColumn flexGrow1');
+                tag.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
                 tag.textContent = tags[entry.tagId];
 
                 let deleteButton = document.createElement('button');
                 deleteButton.setAttribute('type', 'button');
+                deleteButton.setAttribute('class', 'deleteButton');
                 deleteButton.addEventListener('click', function () {
                     deleteListEntry(entry)
                 });
                 deleteButton.textContent = 'Delete';
 
                 let deleteButtonContainer = document.createElement('div');
-                deleteButtonContainer.setAttribute('class', 'timeTrackingListElementColumn flexGrow1');
-                deleteButtonContainer.appendChild(deleteButton)
+                deleteButtonContainer.setAttribute('class', 'timeTrackingListElementColumn timeTrackingListElementActionColumn flexGrow1');
+                deleteButtonContainer.appendChild(deleteButton);
 
                 listElement.appendChild(description);
                 listElement.appendChild(start);
@@ -128,7 +132,7 @@ function renderList() {
         }
     }
     listFooterColumns.count.textContent = currentViewCount + ' Elements';
-    listFooterColumns.totalHours.textContent = formatDuration(totalHours);
+    listFooterColumns.totalHours.textContent = 'Total: ' + formatDuration(totalHours);
 }
 
 function updateTagSuggestions() {
@@ -202,7 +206,19 @@ function resetFilters() {
     updateTagSuggestions();
     dateFilterInput.value = '';
     renderList();
-    setSortIcons(null)
+    setSortIcons(null);
+    setFilterIndicator(false);
+}
+
+function setFilterIndicator(active = true) {
+    let indicator = document.getElementById('filterIndicator');
+    if (active) {
+        indicator.setAttribute('class', 'filterIndicatorActive');
+        indicator.textContent = 'Active';
+    } else {
+        indicator.setAttribute('class', 'filterIndicatorInactive');
+        indicator.textContent = 'Inactive';
+    }
 }
 
 function formatDuration(duration) {
