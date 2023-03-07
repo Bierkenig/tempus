@@ -60,13 +60,16 @@ function setup() {
     document.getElementById('resetFilter').addEventListener('click', resetFilters);
 }
 
-// CONTINUE HERE (CHECK DATE FILTER)
 function renderList() {
     let list = document.getElementById('timeTrackingListContent');
     list.innerHTML = '';
     for (let [index, entry] of entries.entries()) {
+        let dateFilter = new Date(dateFilterInput.value);
+        let dateFilterString = dateFilter.getFullYear() + '-' + dateFilter.getMonth() + '-' + dateFilter.getDate();
+        let startDateString = entry.start.getFullYear() + '-' + entry.start.getMonth() + '-' + entry.start.getDate();
+        let endDateString = entry.end.getFullYear() + '-' + entry.end.getMonth() + '-' + entry.end.getDate();
         if (tagFilterSelect.value === 'placeholder' || tagFilterSelect.value === tags[entry.tagId]) {
-            if (dateFilterInput.value === '' /* OR startdate = datefilter OR end = datefilter (only day, not time) */) {
+            if (dateFilterInput.value === '' || dateFilterString === startDateString || dateFilterString === endDateString) {
                 let listElement = document.createElement('div');
                 listElement.setAttribute('id', index + 'timeTrackingListElement');
                 listElement.setAttribute('class', 'timeTrackingListElement');
