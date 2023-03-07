@@ -17,6 +17,7 @@ module.exports = {
     {
       name: '@electron-forge/maker-deb',
       config: {
+        name: "Tempus",
         options: {
           icon: 'icons/clock.png'
         }
@@ -24,6 +25,9 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-dmg',
+      config: {
+        name: "Tempus",
+      }
     }
   ],
 };
