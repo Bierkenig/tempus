@@ -18,8 +18,8 @@
         <div id="newTimeTrackingEntryHeading" class="boxHeading">New Entry</div>
         <div id="newTimeTrackingEntry">
             <input id="newTimeTrackingEntryDescription" type="text" placeholder="Enter description"/>
-            <input id="newTimeTrackingEntryStart" type="datetime-local"/>
-            <input id="newTimeTrackingEntryEnd" type="datetime-local"/>
+            <input id="newTimeTrackingEntryStart" type="text" placeholder="Start"/>
+            <input id="newTimeTrackingEntryEnd" type="text" placeholder="End"/>
             <input id="newTimeTrackingEntryTag" type="text" placeholder="Enter tag" list="newTimeTrackingEntryTagList"/>
             <datalist id="newTimeTrackingEntryTagList"></datalist>
             <button type="button" id="newTimeTrackingEntryButton">Enter</button>
@@ -30,7 +30,7 @@
         <div id="filterHeading" class="boxHeading">Filters</div>
         <div id="filters">
             <select id="tagFilterSelect"></select>
-            <input id="dateFilterInput" type="date"/>
+            <input id="dateFilterInput" type="text" placeholder="Select date"/>
             <button type="button" id="resetFilter">Reset</button>
         </div>
     </div>

@@ -54,6 +54,8 @@ setup();
 function setup() {
     updateTagSuggestions();
     renderList();
+    entryInputs.start.addEventListener('focus', setStartInputType);
+    entryInputs.end.addEventListener('focus', setEndInputType);
     document.getElementById('newTimeTrackingEntryButton').addEventListener('click', addListEntry);
     document.getElementById('clearTimeTrackingEntryButton').addEventListener('click', clearEntryInputs);
     listHeadColumns.description.addEventListener('click', sortByDescription);
@@ -61,12 +63,15 @@ function setup() {
     listHeadColumns.end.addEventListener('click', sortByEndDate);
     listHeadColumns.duration.addEventListener('click', sortByDuration);
     listHeadColumns.tag.addEventListener('click', sortByTag);
+    dateFilterInput.addEventListener('focus', setFilterInputType);
     tagFilterSelect.addEventListener('change', renderList);
     dateFilterInput.addEventListener('change', renderList);
     tagFilterSelect.addEventListener('change', setFilterIndicator);
     dateFilterInput.addEventListener('change', setFilterIndicator);
+    tagFilterSelect.addEventListener('change', setTagFilterColor);
     document.getElementById('resetFilter').addEventListener('click', resetFilters);
     document.getElementById('filterIndicator').addEventListener('click', resetFilters);
+    setTagFilterColor(null, true);
 }
 
 function renderList() {
@@ -145,7 +150,7 @@ function updateTagSuggestions() {
     tagFilterPlaceholder.setAttribute('value', 'placeholder');
     tagFilterPlaceholder.setAttribute('selected', 'true');
     tagFilterPlaceholder.setAttribute('disabled', 'true');
-    tagFilterPlaceholder.textContent = 'Select Tag';
+    tagFilterPlaceholder.textContent = 'Select tag';
     tagFilterSelect.appendChild(tagFilterPlaceholder);
 
     for (let [index, tag] of tags.entries()) {
@@ -200,6 +205,8 @@ function clearEntryInputs() {
         entryInput.value = '';
     }
     setSortIcons(null)
+    setStartInputType(false);
+    setEndInputType(false);
 }
 
 function resetFilters() {
@@ -208,6 +215,8 @@ function resetFilters() {
     renderList();
     setSortIcons(null);
     setFilterIndicator(false);
+    setFilterInputType(false);
+    setTagFilterColor(null, true);
 }
 
 function setFilterIndicator(active = true) {
@@ -218,6 +227,38 @@ function setFilterIndicator(active = true) {
     } else {
         indicator.setAttribute('class', 'filterIndicatorInactive');
         indicator.textContent = 'Inactive';
+    }
+}
+
+function setStartInputType(date = true) {
+    if (date) {
+        entryInputs.start.type = 'datetime-local';
+    } else {
+        entryInputs.start.type = 'text';
+    }
+}
+
+function setEndInputType(date = true) {
+    if (date) {
+        entryInputs.end.type = 'datetime-local';
+    } else {
+        entryInputs.end.type = 'text';
+    }
+}
+
+function setFilterInputType(date = true) {
+    if (date) {
+        dateFilterInput.type = 'date';
+    } else {
+        dateFilterInput.type = 'text';
+    }
+}
+
+function setTagFilterColor(event, grey = false) {
+    if (grey) {
+        tagFilterSelect.style.color = 'rgba(255, 255, 255, 0.4)';
+    } else {
+        tagFilterSelect.style.color = 'white';
     }
 }
 
