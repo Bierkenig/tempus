@@ -303,6 +303,13 @@ input:hover, select:hover {
     user-select: none;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active{
+    transition: background-color 999999s ease-in-out 0s;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
     height: auto;
