@@ -26,6 +26,42 @@ let entries = [
         end: new Date("2024-01-01T15:10:00Z"),
         tagId: 1,
     },
+    {
+        description: 'Beta',
+        start: new Date("2024-01-01T14:00:00Z"),
+        end: new Date("2024-01-01T15:10:00Z"),
+        tagId: 1,
+    },
+    {
+        description: 'Beta',
+        start: new Date("2024-01-01T14:00:00Z"),
+        end: new Date("2024-01-01T15:10:00Z"),
+        tagId: 1,
+    },
+    {
+        description: 'Beta',
+        start: new Date("2024-01-01T14:00:00Z"),
+        end: new Date("2024-01-01T15:10:00Z"),
+        tagId: 1,
+    },
+    {
+        description: 'Beta',
+        start: new Date("2024-01-01T14:00:00Z"),
+        end: new Date("2024-01-01T15:10:00Z"),
+        tagId: 1,
+    },
+    {
+        description: 'Beta',
+        start: new Date("2024-01-01T14:00:00Z"),
+        end: new Date("2024-01-01T15:10:00Z"),
+        tagId: 1,
+    },
+    {
+        description: 'Beta',
+        start: new Date("2024-01-01T14:00:00Z"),
+        end: new Date("2024-01-01T15:10:00Z"),
+        tagId: 1,
+    },
 ];
 let lastSort;
 let doubleLastSort = false;

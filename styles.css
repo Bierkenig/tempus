@@ -3,13 +3,12 @@
     color: white;
 }
 
-html {
+html, body {
     height: 100%;
 }
 
 body {
     margin: 0;
-    padding: 20px;
     background-size: 300% 300%;
     background-image: linear-gradient(
             -45deg,
@@ -33,11 +32,22 @@ body {
     }
 }
 
+#app {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin: 0 20px 20px 20px;
+    height: 100%;
+}
+
 #pageHeadingContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-top: 20px;
     margin-bottom: 20px;
+    flex-basis: 0;
 }
 
 #pageHeading {
@@ -63,6 +73,7 @@ body {
     justify-content: center;
     gap: 10px;
     margin-bottom: 10px;
+    flex-basis: 0;
 }
 
 #filters {
@@ -82,20 +93,58 @@ body {
     gap: 5px;
 }
 
+#timeTrackingListContainer {
+    flex-basis: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+#timeTrackingListContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 5px;
+    overflow-y: scroll;
+    padding-right: 5px;
+    flex-basis: 0;
+    flex-grow: 1;
+}
+
 .deleteEntryButton {
     width: fit-content;
 }
 
-.timeTrackingList {
+#timeTrackingListHeading {
+    flex-basis: 0;
+}
+
+#timeTrackingList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+    width: 100%;
+    flex-basis: 0;
+    flex-grow: 1;
+}
+
+#timeTrackingListTopPart {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width: 100%;
+    gap: 5px;
+    flex-basis: 0;
+    flex-grow: 1;
 }
 
 #timeTrackingListHead {
     font-weight: bold;
     white-space: nowrap;
+    flex-basis: 0;
+    padding-right: 25px;
 }
 
 .timeTrackingListElement {
@@ -105,7 +154,6 @@ body {
     gap: 5px;
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 5px;
 }
 
 .timeTrackingListElementColumn {
@@ -127,6 +175,7 @@ body {
     justify-content: space-between;
     font-weight: bold;
     user-select: none;
+    flex-basis: 0;
 }
 
 .lightBackground {
@@ -252,6 +301,21 @@ input:hover, select:hover {
 
 .noUserSelect {
     user-select: none;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: auto;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 20px;
 }
 
 @media screen and (max-width: 700px) {
