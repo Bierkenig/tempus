@@ -23,7 +23,7 @@ let entries = [
     {
         description: 'Beta',
         start: new Date("2024-01-01T14:00:00Z"),
-        end: new Date("2024-01-01T15:00:00Z"),
+        end: new Date("2024-01-01T15:10:00Z"),
         tagId: 1,
     },
 ];
@@ -39,7 +39,12 @@ let listHeadColumns = {
     description: document.getElementById('timeTrackingListHeadDescription'),
     start: document.getElementById('timeTrackingListHeadStart'),
     end: document.getElementById('timeTrackingListHeadEnd'),
+    duration: document.getElementById('timeTrackingListHeadDuration'),
     tag: document.getElementById('timeTrackingListHeadTag'),
+}
+let listFooterColumns = {
+    count: document.getElementById('timeTrackingListFooterCount'),
+    totalHours: document.getElementById('timeTrackingListFooterTotalHours'),
 }
 let tagFilterSelect = document.getElementById('tagFilterSelect');
 let dateFilterInput = document.getElementById('dateFilterInput');
@@ -54,6 +59,7 @@ function setup() {
     listHeadColumns.description.addEventListener('click', sortByDescription);
     listHeadColumns.start.addEventListener('click', sortByStartDate);
     listHeadColumns.end.addEventListener('click', sortByEndDate);
+    listHeadColumns.duration.addEventListener('click', sortByDuration);
     listHeadColumns.tag.addEventListener('click', sortByTag);
     tagFilterSelect.addEventListener('change', renderList);
     dateFilterInput.addEventListener('change', renderList);
@@ -63,6 +69,8 @@ function setup() {
 function renderList() {
     let list = document.getElementById('timeTrackingListContent');
     list.innerHTML = '';
+    let totalHours = 0;
+    let currentViewCount = 0;
     for (let [index, entry] of entries.entries()) {
         let dateFilter = new Date(dateFilterInput.value);
         let dateFilterString = dateFilter.getFullYear() + '-' + dateFilter.getMonth() + '-' + dateFilter.getDate();
@@ -86,6 +94,12 @@ function renderList() {
                 end.setAttribute('class', 'timeTrackingListElementColumn flexGrow2');
                 end.textContent = entry.end.toLocaleString('de-DE');
 
+                let duration = document.createElement('div');
+                duration.setAttribute('class', 'timeTrackingListElementColumn flexGrow1');
+                let hours = Math.abs(entry.end - entry.start) / (1000 * 60 * 60);
+                totalHours += hours;
+                duration.textContent = formatDuration(hours);
+
                 let tag = document.createElement('div');
                 tag.setAttribute('class', 'timeTrackingListElementColumn flexGrow1');
                 tag.textContent = tags[entry.tagId];
@@ -104,13 +118,17 @@ function renderList() {
                 listElement.appendChild(description);
                 listElement.appendChild(start);
                 listElement.appendChild(end);
+                listElement.appendChild(duration);
                 listElement.appendChild(tag);
                 listElement.appendChild(deleteButtonContainer);
 
                 list.appendChild(listElement);
+                currentViewCount++;
             }
         }
     }
+    listFooterColumns.count.textContent = currentViewCount + ' Elements';
+    listFooterColumns.totalHours.textContent = formatDuration(totalHours);
 }
 
 function updateTagSuggestions() {
@@ -187,6 +205,10 @@ function resetFilters() {
     setSortIcons(null)
 }
 
+function formatDuration(duration) {
+    return (Math.round((duration + Number.EPSILON) * 100) / 100).toString() + ' h'
+}
+
 function sortByDescription() {
     sortEntries('description');
 }
@@ -197,6 +219,10 @@ function sortByStartDate() {
 
 function sortByEndDate() {
     sortEntries('end');
+}
+
+function sortByDuration() {
+    sortEntries('duration');
 }
 
 function sortByTag() {
@@ -214,6 +240,9 @@ function sortEntries(property) {
             break;
         case 'end':
             entries.sort(compareEndDate);
+            break;
+        case 'duration':
+            entries.sort(compareDuration);
             break;
         case 'tag':
             entries.sort(compareTag);
@@ -273,6 +302,18 @@ function compareEndDate(a, b) {
         return -1;
     }
     if (a.end > b.end) {
+        return 1;
+    }
+    return 0;
+}
+
+function compareDuration(a, b) {
+    let aDuration = Math.abs(a.end - a.start) / (1000 * 60 * 60);
+    let bDuration = Math.abs(b.end - b.start) / (1000 * 60 * 60);
+    if (aDuration < bDuration) {
+        return -1;
+    }
+    if (aDuration > bDuration) {
         return 1;
     }
     return 0;
