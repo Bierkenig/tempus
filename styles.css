@@ -43,17 +43,22 @@ body {
 
 #pageHeadingContainer {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     margin-top: 20px;
     margin-bottom: 20px;
     flex-basis: 0;
 }
 
+.pageHeadingIcon {
+    height: 60px;
+}
+
 #pageHeading {
     width: fit-content;
     font-weight: bolder;
-    font-size: xxx-large;
+    font-size: 48px;
+    height: 60px;
 }
 
 .boxHeading {
