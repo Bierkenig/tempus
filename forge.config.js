@@ -4,14 +4,17 @@ module.exports = {
   buildIdentifier: process.env.IS_BETA ? 'beta' : 'prod',
   packagerConfig: {
     appBundleId: fromBuildIdentifier({beta: 'com.beta.app.tempus', prod: 'com.app.tempus'}),
-    icon: 'icons/clock.png'
+    icon: 'icons/icon'
   },
   rebuildConfig: {},
   makers: [
     {
       name: '@electron-forge/maker-zip',
       config: {
-        name: "Tempus"
+        name: "Tempus",
+        options: {
+          icon: 'icons/icon.png'
+        }
       }
     },
     {
@@ -19,7 +22,7 @@ module.exports = {
       config: {
         name: "Tempus",
         options: {
-          icon: 'icons/clock.png'
+          icon: 'icons/icon.png'
         }
       }
     },
