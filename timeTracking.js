@@ -63,6 +63,7 @@ let entries = [
         tagId: 1,
     },
 ];
+
 let lastSort;
 let doubleLastSort = false;
 let entryInputs = {
@@ -85,9 +86,11 @@ let listFooterColumns = {
 let tagFilterSelect = document.getElementById('tagFilterSelect');
 let dateFilterInput = document.getElementById('dateFilterInput');
 
-setup();
+setup()
 
 function setup() {
+    localStorage.getItem('entries') !== undefined && localStorage.getItem('entries') !== null ? entries = getConvertedEntries(JSON.parse(localStorage.getItem('entries'))) : ""
+    localStorage.getItem('tags') !== undefined && localStorage.getItem('tags') !== null ? tags = JSON.parse(localStorage.getItem('tags')) : ""
     updateTagSuggestions();
     renderList();
     entryInputs.start.addEventListener('focus', setStartInputType);
@@ -224,6 +227,7 @@ function addListEntry() {
         renderList();
         clearEntryInputs();
     }
+    persistData()
 }
 
 function deleteListEntry(entry) {
@@ -234,6 +238,7 @@ function deleteListEntry(entry) {
         }
     }
     renderList();
+    persistData()
 }
 
 function clearEntryInputs() {
@@ -378,6 +383,19 @@ function compareDescription(a, b) {
         return 1;
     }
     return 0;
+}
+
+function persistData() {
+    localStorage.setItem('entries', JSON.stringify(entries))
+    localStorage.setItem('tags', JSON.stringify(tags))
+}
+
+function getConvertedEntries(entries) {
+    entries.forEach((el) => {
+        el.end = new Date(el.end)
+        el.start = new Date(el.start)
+    })
+    return entries
 }
 
 function compareStartDate(a, b) {
